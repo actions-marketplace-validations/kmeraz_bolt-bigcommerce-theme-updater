@@ -1,0 +1,55 @@
+name: Update BigCommerce Theme with Bolt
+
+description: >
+  GitHub Action that updates a BigCommerce theme repository to add Bolt scripts and buttons
+  as described in Step 6 of the Bolt BigCommerce installation guide.
+
+author: bolt
+
+inputs:
+  file_path:
+    description: "Path to the BigCommerce theme file to update (e.g., templates/layout/base.html)"
+    required: true
+  openai_api_key:
+    description: "Your OpenAI API key"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Read file content
+      id: read_file
+      shell: bash
+      run: |
+        content=$(cat "$GITHUB_WORKSPACE/${{ inputs.file_path }}" | base64 -w 0)
+        echo "content=$content" >> $GITHUB_OUTPUT
+
+    - name: Call OpenAI API to update with Bolt integration
+      id: call_openai
+      shell: bash
+      run: |
+        content_decoded=$(echo "${{ steps.read_file.outputs.content }}" | base64 --decode)
+
+        request=$(jq -n --arg content "$content_decoded" '{
+          model: "gpt-4",
+          messages: [
+            {"role": "system", "content": "You are a senior frontend developer integrating Bolt Checkout into BigCommerce themes."},
+            {"role": "user", "content": "Given the following BigCommerce theme file, modify it to include the Bolt scripts and buttons per the Bolt installation instructions (Step 6): https://help.bolt.com/platforms/bigcommerce/bigcommerce-setup-guide/bigcommerce-installation/#step-6-add-scripts--buttons\n\n" + $content}
+          ],
+          temperature: 0.2
+        }')
+
+        response=$(curl -s https://api.openai.com/v1/chat/completions \
+          -H "Authorization: Bearer ${{ inputs.openai_api_key }}" \
+          -H "Content-Type: application/json" \
+          -d "$request")
+
+        new_content=$(echo "$response" | jq -r '.choices[0].message.content')
+
+        echo "$new_content" > "$GITHUB_WORKSPACE/${{ inputs.file_path }}"
+        echo "File updated using OpenAI with Bolt scripts and buttons."
+
+    - name: Show file diff (optional)
+      shell: bash
+      run: |
+        git diff --color ${{ inputs.file_path }} || true
