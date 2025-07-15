@@ -1,0 +1,3 @@
+# Reporting a vulnerability
+Please do not open GitHub issues or pull requests for vulnerabilities or security misconfigurations. This makes the problem immediately visible to everyone, including malicious actors.
+Security issues in this open-source project can be safely reported to Bolt’s security team here: security@bolt.com. For more information on Bolt’s security program please see bolt.com/security.
