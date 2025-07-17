@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{head.title}}</title>
+
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{{cdn 'assets/css/theme.css'}}">
+
+    <!-- Theme Meta -->
+    {{{head.meta_tags}}}
+
+    <!-- Theme CSS -->
+    {{{head.css}}}
+
+    <!-- Custom Head Scripts -->
+    {{{head.scripts}}}
+
+    <!-- Bolt Base Tracking Script - Added for all pages -->
+    <script id="bolt-track" type="text/javascript" src="https://connect.bolt.com/track.js"
+        data-publishable-key="{PUBLISHABLE_KEY}" data-shopping-cart-id="BigCommerce">
+        </script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo">
+                    <a href="{{urls.home}}">{{settings.store_name}}</a>
+                </h1>
+
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="{{urls.home}}">Home</a></li>
+                        <li><a href="{{urls.shop}}">Shop</a></li>
+                        <li><a href="{{urls.about}}">About</a></li>
+                        <li><a href="{{urls.contact}}">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <a href="{{urls.cart}}" class="cart-link">
+                        Cart ({{cart.quantity}})
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        {{{page_content}}}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; {{settings.store_name}} {{date.year}}</p>
+        </div>
+    </footer>
+
+    <!-- Footer Scripts -->
+    {{{footer.scripts}}}
+
+    <!-- Theme JavaScript -->
+    <script src="{{cdn 'assets/js/theme.js'}}"></script>
+</body>
+
+</html>

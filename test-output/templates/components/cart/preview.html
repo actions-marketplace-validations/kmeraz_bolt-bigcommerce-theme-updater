@@ -1,0 +1,71 @@
+<div class="cart-preview" data-cart-preview>
+    <div class="cart-preview-header">
+        <h3>Cart ({{cart.quantity}})</h3>
+        <button class="cart-preview-close" data-cart-preview-close>×</button>
+    </div>
+
+    {{#if cart.items}}
+    <!-- Mini Cart Bolt Script -->
+    <script>
+        if (window.BoltCheckout && window.BoltCheckout.reloadBigCommerceCart) {
+            window.BoltCheckout.reloadBigCommerceCart();
+        } else {
+            console.log("window.BoltCheckout.reloadBigCommerceCart is not defined");
+        }
+    </script>
+
+    <div class="cart-preview-items">
+        {{#each cart.items}}
+        <div class="cart-preview-item">
+            <div class="item-image">
+                <img src="{{image.url}}" alt="{{name}}">
+            </div>
+            <div class="item-details">
+                <h4>{{name}}</h4>
+                <p class="item-price">{{price.formatted}}</p>
+                <p class="item-quantity">Qty: {{quantity}}</p>
+            </div>
+            <button class="remove-item" data-item-id="{{id}}">×</button>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="cart-preview-footer">
+        <div class="cart-preview-total">
+            <span>Total: </span>
+            <span class="previewCartCheckout-price">{{cart.total.formatted}}</span>
+        </div>
+
+        <div class="cart-preview-actions">
+            <a href="{{urls.cart}}" class="button button--secondary">View Cart</a>
+
+            <!-- Original checkout button (will be hidden) -->
+            <a href="{{urls.checkout}}" class="button button--primary">Checkout</a>
+
+            <!-- Bolt Checkout Button -->
+            <div data-tid="instant-bolt-checkout-button">
+                <object data="https://connect.bolt.com/v1/checkout_button?publishable_key={PUBLISHABLE_KEY}">
+                </object>
+            </div>
+
+            <!-- Script to hide original checkout button -->
+            <script>
+                var originalCheckoutButton = document.querySelector(".cart-preview-actions .button--primary");
+                var boltButtons = document.getElementsByClassName("bolt-button-wrapper");
+
+                for (var i = 0; i < boltButtons.length; i++) {
+                    boltButtons[i].style.display = 'block';
+                }
+
+                if (originalCheckoutButton) {
+                    originalCheckoutButton.style.display = 'none';
+                }
+            </script>
+        </div>
+    </div>
+    {{else}}
+    <div class="cart-preview-empty">
+        <p>Your cart is empty.</p>
+    </div>
+    {{/if}}
+</div>

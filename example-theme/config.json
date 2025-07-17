@@ -1,0 +1,21 @@
+{
+    "name": "Bolt Example Theme",
+    "version": "1.0.0",
+    "description": "Example BigCommerce theme with Bolt integration",
+    "author": "Bolt",
+    "supported_features": [
+        "optimized_checkout",
+        "product_recommendations",
+        "product_options",
+        "cart_preview",
+        "ajax_add_to_cart"
+    ],
+    "dependencies": {
+        "stencil-utils": "^1.0.0"
+    },
+    "meta": {
+        "theme_type": "stencil",
+        "platform": "bigcommerce",
+        "bolt_integrated": true
+    }
+}

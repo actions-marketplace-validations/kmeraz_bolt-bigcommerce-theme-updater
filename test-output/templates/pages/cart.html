@@ -1,0 +1,104 @@
+{{#partial "page"}}
+<div class="cart-page">
+    <div class="container">
+        <h1>Shopping Cart</h1>
+
+        {{#if cart.items}}
+        <!-- Bolt Connect Script - Added above first div -->
+        <script id="bolt-connect" type="text/javascript" src="https://connect.bolt.com/connect-bigcommerce.js"
+            data-publishable-key="{PUBLISHABLE_KEY}" data-storefront-api-token="{{settings.storefront_api.token}}"
+            route-public-token="{ROUTE_PUBLIC_TOKEN}">
+            </script>
+
+        <!-- Cart Update Script for Bolt -->
+        <script>
+            var config = { childList: true, subtree: true };
+            var totalClassName = "cart-total-value";
+            var totalPrice = "";
+            var callback = function (mutationsList) {
+                var elms = document.getElementsByClassName(totalClassName);
+                if (elms.length == 0) {
+                    return;
+                }
+                var newPrice = elms[0].innerHTML;
+                if (newPrice !== totalPrice && window.BoltCheckout && window.BoltCheckout.reloadBigCommerceCart) {
+                    window.BoltCheckout.reloadBigCommerceCart();
+                }
+                totalPrice = newPrice;
+            };
+            new MutationObserver(callback).observe(document.body, config);
+        </script>
+
+        <div class="cart-items">
+            {{#each cart.items}}
+            <div class="cart-item">
+                <div class="item-image">
+                    <img src="{{image.url}}" alt="{{name}}">
+                </div>
+                <div class="item-details">
+                    <h3>{{name}}</h3>
+                    <p class="item-price">{{price.formatted}}</p>
+                    <div class="item-quantity">
+                        <label>Quantity:</label>
+                        <input type="number" value="{{quantity}}" min="1" data-item-id="{{id}}" class="quantity-input">
+                    </div>
+                    <button class="remove-item" data-item-id="{{id}}">Remove</button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-totals">
+                <div class="subtotal">
+                    <span>Subtotal:</span>
+                    <span class="cart-total-value">{{cart.subtotal.formatted}}</span>
+                </div>
+                <div class="tax">
+                    <span>Tax:</span>
+                    <span>{{cart.tax.formatted}}</span>
+                </div>
+                <div class="total">
+                    <span>Total:</span>
+                    <span class="cart-total-value">{{cart.total.formatted}}</span>
+                </div>
+            </div>
+
+            <div class="cart-actions">
+                <!-- Original checkout button (will be hidden by Bolt script) -->
+                <a href="{{urls.checkout}}" class="button button--primary">
+                    Proceed to Checkout
+                </a>
+
+                <!-- Bolt Checkout Button -->
+                <div data-tid="instant-bolt-checkout-button">
+                    <object data="https://connect.bolt.com/v1/checkout_button?publishable_key={PUBLISHABLE_KEY}">
+                    </object>
+                </div>
+
+                <!-- Script to hide original checkout button -->
+                <script>
+                    var originalCheckoutButton = document.querySelector(".cart-actions .button--primary");
+                    var boltButtons = document.getElementsByClassName("bolt-button-wrapper");
+
+                    for (var i = 0; i < boltButtons.length; i++) {
+                        boltButtons[i].style.display = 'block';
+                    }
+
+                    if (originalCheckoutButton) {
+                        originalCheckoutButton.style.display = 'none';
+                    }
+                </script>
+            </div>
+        </div>
+        {{else}}
+        <div class="empty-cart">
+            <p>Your cart is empty.</p>
+            <a href="{{urls.shop}}" class="button">Continue Shopping</a>
+        </div>
+        {{/if}}
+    </div>
+</div>
+{{/partial}}
+
+{{> layout/base}}

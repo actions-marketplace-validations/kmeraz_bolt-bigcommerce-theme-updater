@@ -1,0 +1,20 @@
+name: Test BigCommerce Theme Updater Action
+
+on: push
+
+jobs:
+  test-local-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run local action
+        uses: ./  # References the action at the repo root (action.yml)
+        with:
+          theme_directory: "./example-theme"
+          output_directory: "./test-output"
+          publishable_key: "pk_test_your_bolt_key"
+          environment: "sandbox"
+          theme_name: "AI-Modified-Bolt-Theme"
+          openai_api_key: ""
