@@ -316,24 +316,15 @@ class BoltThemeModifier:
         print("✅ Created minimal theme structure for testing")
 
 def main() -> None:
-    inputs: Dict[str, Optional[str]] = {
-        "theme_directory": os.getenv("INPUT_THEME_DIRECTORY", None),
-        "output_directory": os.getenv("INPUT_OUTPUT_DIRECTORY", None),
-        "publishable_key": os.getenv("INPUT_PUBLISHABLE_KEY", None),
-        "environment": os.getenv("INPUT_ENVIRONMENT", None),
-        "theme_name": os.getenv("INPUT_THEME_NAME", None),
-        "route_token": os.getenv("INPUT_ROUTE_TOKEN", None),
-        "openai_api_key": os.getenv("INPUT_OPENAI_API_KEY", None)
-    }
-
     # Get inputs from environment
-    theme_dir: Optional[str] = inputs["theme_directory"]
-    output_dir: Optional[str] = inputs["output_directory"]
-    publishable_key: Optional[str] = inputs["publishable_key"]
-    environment: Optional[str] = inputs["environment"]
-    theme_name: Optional[str] = inputs["theme_name"]
-    route_token: Optional[str] = inputs["route_token"]
-    openai_api_key: Optional[str] = inputs["openai_api_key"]
+    theme_dir = sys.argv[1]
+    output_dir = sys.argv[2]
+    publishable_key = sys.argv[3]
+    environment = sys.argv[4]
+    theme_name = sys.argv[5]
+    route_token = sys.argv[6]
+    openai_api_key = sys.argv[7]
+
     print(f"🚀 Starting Bolt BigCommerce theme integration...")
     print(f"📁 Theme directory: {theme_dir}")
     print(f"📁 Output directory: {output_dir}")
