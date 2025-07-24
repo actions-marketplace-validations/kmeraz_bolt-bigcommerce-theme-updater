@@ -1,8 +1,7 @@
 name: Update BigCommerce Theme with Bolt
 
 description: >
-    GitHub Action that updates a BigCommerce theme repository to add Bolt scripts and buttons
-    as described in Step 6 of the Bolt BigCommerce installation guide.
+    GitHub Action that updates a BigCommerce theme repository as described in Step 6 of the Bolt BigCommerce installation guide.
 
 author: bolt
 
